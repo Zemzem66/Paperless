@@ -1,0 +1,17 @@
+version: '3'
+services:
+  spring-boot-app:
+    image: paperles:latest
+    container_name: paperles
+    ports:
+      - "8080:8080"
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./static:/usr/share/nginx/html
+    depends_on:
+      - spring-boot-app
