@@ -1,0 +1,16 @@
+version: "3.7"
+services:
+  frontend:
+    image: paperless:nginx
+    build:
+      context: .
+      dockerfile: ui/Dockerfile
+    ports:
+      - "8080:80"
+  backend:
+    image: paperless:swagger
+    build:
+      context: .
+      dockerfile: dockerfile
+    ports:
+      - "8088:8088"
