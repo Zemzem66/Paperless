@@ -5,54 +5,13 @@
  */
 package io.swagger.api;
 
-import io.swagger.model.ApiAcknowledgeTasksBody;
-import io.swagger.model.ApiCorrespondentsBody;
-import io.swagger.model.ApiDocumentTypesBody;
-import io.swagger.model.ApiGroupsBody;
-import io.swagger.model.ApiSavedViewsBody;
-import io.swagger.model.ApiStoragePathsBody;
-import io.swagger.model.ApiTagsBody;
-import io.swagger.model.ApiUiSettingsBody;
-import io.swagger.model.ApiUsersBody;
-import io.swagger.model.CorrespondentsIdBody;
-import io.swagger.model.DocumentTypesIdBody;
-import io.swagger.model.DocumentsBulkEditBody;
-import io.swagger.model.DocumentsIdBody;
-import io.swagger.model.DocumentsSelectionDataBody;
-import io.swagger.model.GroupsIdBody;
-import io.swagger.model.InlineResponse200;
-import io.swagger.model.InlineResponse2001;
-import io.swagger.model.InlineResponse20010;
-import io.swagger.model.InlineResponse20011;
-import io.swagger.model.InlineResponse20012;
-import io.swagger.model.InlineResponse20013;
-import io.swagger.model.InlineResponse20014;
-import io.swagger.model.InlineResponse20015;
-import io.swagger.model.InlineResponse20016;
-import io.swagger.model.InlineResponse20017;
-import io.swagger.model.InlineResponse20018;
-import io.swagger.model.InlineResponse20019;
-import io.swagger.model.InlineResponse2002;
-import io.swagger.model.InlineResponse20020;
-import io.swagger.model.InlineResponse20021;
-import io.swagger.model.InlineResponse20022;
-import io.swagger.model.InlineResponse20023;
-import io.swagger.model.InlineResponse20024;
-import io.swagger.model.InlineResponse20025;
-import io.swagger.model.InlineResponse20026;
-import io.swagger.model.InlineResponse2003;
-import io.swagger.model.InlineResponse2004;
-import io.swagger.model.InlineResponse2005;
-import io.swagger.model.InlineResponse2006;
-import io.swagger.model.InlineResponse2007;
-import io.swagger.model.InlineResponse2008;
-import io.swagger.model.InlineResponse2009;
+import com.sun.net.httpserver.Authenticator;
+import io.swagger.model.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.web.context.request.NativeWebRequest;
 import org.threeten.bp.OffsetDateTime;
 import org.springframework.core.io.Resource;
-import io.swagger.model.StoragePathsIdBody;
-import io.swagger.model.TagsIdBody;
-import io.swagger.model.UserInfo;
-import io.swagger.model.UsersIdBody;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -76,12 +35,59 @@ import org.springframework.web.bind.annotation.CookieValue;
 
 import javax.validation.Valid;
 import javax.validation.constraints.*;
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2023-10-18T15:01:04.033019109Z[GMT]")
 @Validated
 public interface ApiApi {
+
+    //If emppty return
+    default Optional<NativeWebRequest> getRequest(){
+        return Optional.empty();
+    }
+
+    /**
+     * POST /api/acknowledge_tasks/
+     *
+     * @param ackTasksRequest  (optional)
+     * @return Success (status code 200)
+     */
+    @Operation(
+            operationId = "ackTasks",
+            tags = { "Tasks" },
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Success", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = AckTasks200Response.class))
+                    })
+            }
+    )
+
+    @RequestMapping(
+            method = RequestMethod.POST,
+            value = "/api/acknowledge_task/",
+            produces = {"application/json"},
+            consumes = {"application/json"}
+    )
+    default ResponseEntity<AckTasks200Response> ackTasks(
+            @Parameter(name = "AckTasksRequest", description = "") @Valid @RequestBody(required = false) AckTasksRequest ackTasksRequest
+    ) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"result\" : 0 }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.OK);
+
+    }
+
+
 
     @Operation(summary = "", description = "", tags={ "Tasks" })
     @ApiResponses(value = { 

@@ -14,3 +14,33 @@ services:
       dockerfile: dockerfile
     ports:
       - "8088:8088"
+  paperless_database:
+    container_name: paperless_db
+    image: postgres:12
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: paperless
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+#  test_database:
+ #   image: mysql
+  #  restart: always
+   # ports:
+    #    - "3306:3306"
+    #environment:
+     # MYSQL_DATABASE: dbName
+      #MYSQL_USER: saw
+      #MYSQL_PASSWORD: root
+      #MYSQL_ROOT_PASSWORD: root
+
+# ports:
+ #    - 3306:3306
+  # environment:
+    # MYSQL_USER: mysql
+   #  MYSQL_ROOT_PASSWORD: mysql
+    # MYSQL_DB: mysql
+volumes:
+  pgdata: {}
+
+

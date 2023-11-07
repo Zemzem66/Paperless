@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SqlDialectMappings">
+    <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/ba7c64c2-822a-43e2-bfdd-b3751cf37138/console.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/src/Paperless_database.sql" dialect="MySQL" />
+  </component>
+</project>

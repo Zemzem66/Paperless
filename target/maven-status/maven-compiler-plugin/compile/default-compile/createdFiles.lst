@@ -75,6 +75,7 @@ io\swagger\model\ApicorrespondentsidPermissionsView.class
 io\swagger\model\InlineResponse2007.class
 io\swagger\configuration\CustomInstantDeserializer$11.class
 io\swagger\configuration\CustomInstantDeserializer$6.class
+io\swagger\mapper\DocumentMapperImpl.class
 io\swagger\model\Document.class
 io\swagger\model\InlineResponse2002.class
 io\swagger\model\ApiAcknowledgeTasksBody.class
@@ -91,6 +92,7 @@ io\swagger\configuration\SwaggerUiConfiguration.class
 io\swagger\api\NotFoundException.class
 io\swagger\model\ApiuiSettingsSettingsUpdateChecking.class
 io\swagger\model\NewCorrespondent.class
+io\swagger\entity\DocumentEntity.class
 io\swagger\model\ApisavedViewsFilterRules.class
 io\swagger\model\InlineResponse20026.class
 io\swagger\model\ApistoragePathsidPermissionsForm.class
@@ -103,6 +105,7 @@ io\swagger\model\InlineResponse2008.class
 io\swagger\configuration\CustomInstantDeserializer$10.class
 io\swagger\configuration\CustomInstantDeserializer$8.class
 io\swagger\model\ApigroupsidPermissionsForm.class
+io\swagger\mapper\DocumentMapper.class
 io\swagger\model\ApiuiSettingsSettingsSavedViews.class
 io\swagger\model\ApiGroupsBody.class
 io\swagger\model\InlineResponse20022.class
@@ -117,4 +120,5 @@ io\swagger\model\InlineResponse2009.class
 io\swagger\model\InlineResponse20021.class
 io\swagger\RFC3339DateFormat.class
 io\swagger\api\ApiApiController.class
+io\swagger\entity\DocumentEntity$DocumentEntityBuilder.class
 io\swagger\model\InlineResponse20016.class

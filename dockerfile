@@ -1,4 +1,4 @@
-FROM openjdk:17
+FROM amazoncorretto:17-alpine-jdk
 WORKDIR /app
 # Install Maven (if not already installed)
 RUN apk --no-cache add maven
