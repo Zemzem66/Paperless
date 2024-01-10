@@ -1,0 +1,15 @@
+# Verwende das neueste Nginx-Image als Basis
+FROM nginx:latest
+
+# Kopiere die UI-Dateien in das Nginx-Verzeichnis
+COPY ./static /usr/share/nginx/html
+
+# Füge die CORS-Konfigurationsdatei hinzu
+COPY ./cors.conf /etc/nginx/conf.d/cors.conf
+
+# Freigabe des Ports 80
+EXPOSE 80
+
+
+# Führe Nginx im Vordergrund aus
+CMD ["nginx", "-g", "daemon off;"]
