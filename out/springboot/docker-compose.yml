@@ -1,17 +1,36 @@
-version: '3'
+version: "1.0"
 services:
-  spring-boot-app:
-    image: paperles:latest
-    container_name: paperles
+  frontend:
+    image: paperless:nginx
+    build:
+      dockerfile: ui/Dockerfile
     ports:
-      - "8080:8080"
-
-  nginx:
-    image: nginx:latest
-    container_name: nginx
+      - "8080:80"
+  backend:
+    image: paperless:openjdk
+    build:
+      dockerfile: Dockerfile
     ports:
-      - "80:80"
+      - "8088:8088"
+  persistence:
+    image: postgres
+    restart: always
+    ports:
+      - "5432:5432"
     volumes:
-      - ./static:/usr/share/nginx/html
-    depends_on:
-      - spring-boot-app
+      - paperless_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: paperless_db
+  rabbitmq:
+    image: rabbitmq:3.12.8-management
+    container_name: paperless-rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=paperless
+      - RABBITMQ_DEFAULT_PASS=paperless
+volumes:
+  paperless_data:
