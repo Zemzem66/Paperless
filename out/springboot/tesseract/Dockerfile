@@ -1,0 +1,25 @@
+# Use a base image with Python installed
+FROM python:3.8
+
+# Set the working directory inside the container
+WORKDIR /app
+
+COPY requirements.txt /app/
+
+# Install dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+RUN apt update
+RUN apt install poppler-utils -y
+RUN apt install tesseract-ocr -y
+RUN apt install tesseract-ocr-eng -y
+RUN apt install tesseract-ocr-deu -y
+
+
+# Copy the script and requirements file into the container
+COPY script.py /app/
+COPY elastic_search_service.py /app/
+
+
+
+# Command to run the script
+CMD ["python", "-u","script.py"]

@@ -1,0 +1,18 @@
+# Verwende das Basisimage mit Maven und Amazon Corretto JDK
+FROM maven:3.9.5-amazoncorretto-21
+
+# Arbeitsverzeichnis im Container setzen
+WORKDIR /app
+
+# Kopiere den gesamten Anwendungscode
+COPY src /app/src/
+COPY pom.xml /app/pom.xml
+
+# Das Jar-Datei erstellen
+RUN mvn clean package
+
+# Port 8080 freigeben
+EXPOSE 8080
+
+# Das Jar-Datei ausführen
+CMD ["java", "-jar", "target/paperless-1.0.jar"]

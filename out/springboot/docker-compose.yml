@@ -1,59 +1,106 @@
-version: "1.0"
+version: '3'
+
 services:
-  frontend:
-    image: paperless:nginx
+  nginx:
     build:
-      dockerfile: ui/Dockerfile
+      context: ./ui
+      dockerfile: Dockerfile-Paperless-UI
+    container_name: paperless-ui
     ports:
-      - "8080:80"
-  backend:
-    image: paperless:openjdk
+      - "80:80"
+    expose:
+      - "80"
+
+  tesseract:
     build:
-      dockerfile: Dockerfile
-    ports:
-      - "8088:8088"
+      context: ./tesseract
+      dockerfile: Dockerfile-Paperless-Tesseract
+    container_name: paperless-tesseract
     depends_on:
       minio:
         condition: service_started
       rabbitmq:
         condition: service_started
-      persistence:
+      elasticsearch:
+        condition: service_started
+      postgres:
         condition: service_healthy
-  persistence:
-    image: postgres
-    restart: always
+
+  spring-app:
+    build:
+      context: .
+      dockerfile: Dockerfile-Paperless-API
+    container_name: paperless-api
+    ports:
+      - "8080:8080"
+    expose:
+      - "8080"
+    depends_on:
+      minio:
+        condition: service_started
+      rabbitmq:
+        condition: service_started
+      postgres:
+        condition: service_healthy
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+
+  postgres:
+    image: postgres:latest
+    container_name: paperless-postgres
     ports:
       - "5432:5432"
-    volumes:
-      - paperless_data:/var/lib/postgresql/data
+    expose:
+      - "5432"
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: paperless_db
+      - POSTGRES_USER=paperless
+      - POSTGRES_PASSWORD=paperless
+      - POSTGRES_DB=paperless
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "paperless"]
       interval: 10s
       timeout: 5s
       retries: 20
-  rabbitmq:
-    image: rabbitmq:3.12.8-management
-    container_name: paperless-rabbitmq
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-    environment:
-      - RABBITMQ_DEFAULT_USER=paperless
-      - RABBITMQ_DEFAULT_PASS=paperless
+
   minio:
     image: minio/minio
     container_name: paperless-minio
     ports:
       - "9000:9000"
       - "9001:9001"
+    expose:
+      - "9000"
+      - "9001"
     environment:
       - MINIO_ACCESS_KEY=paperless
       - MINIO_SECRET_KEY=paperless
       - MINIO_CONSOLE_ADDRESS=:9001
     command: server /data
-volumes:
-  paperless_data:
+
+  rabbitmq:
+    image: rabbitmq:3.12.8-management
+    container_name: paperless-rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    expose:
+      - "5672"
+      - "15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=paperless
+      - RABBITMQ_DEFAULT_PASS=paperless
+
+  elasticsearch:
+    image: elasticsearch:8.7.1
+    container_name: paperless-elasticsearch
+    environment:
+      - discovery.type=single-node
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "xpack.security.enabled=false"
+      - "xpack.security.enrollment.enabled=false"
+      - ELASTIC_PASSWORD=paperless
+    ports:
+      - 9200:9200
+      - 9300:9300
